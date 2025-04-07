@@ -56,3 +56,4 @@ This project significantly improved my understanding of network programming, esp
 Overall, while I encountered several challenges during development, each issue provided a learning opportunity, and the final system successfully demonstrates both location tracking and basic maintenance management features.
 
 
+# iot2425-graded-ws2-a2-gulderen
