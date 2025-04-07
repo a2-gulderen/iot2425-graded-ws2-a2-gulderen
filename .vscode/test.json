@@ -1,0 +1,84 @@
+[
+    {
+      "directive": "JOIN",
+      "ebike_id": 123,
+      "timestamp": "2025-02-27T12:00:00Z"
+    },
+    {
+      "directive": "JACK",
+      "status": "success",
+      "data_interval": 5
+    },
+    {
+      "directive": "DATA",
+      "ebike_id": 123,
+      "timestamp": "2025-02-27T12:05:00Z",
+      "gps": {
+        "latitude": 51.5074,
+        "longitude": -0.1278
+      },
+      "accelerometer": {
+        "x": 5.0,
+        "y": -3.0,
+        "z": 0.8
+      },
+      "lock_status": 0
+    },
+    {
+      "directive": "COMMAND",
+      "timestamp": "2025-02-27T12:10:00Z",
+      "action": "lock",
+      "ebike_ids": [123, 456, 789]
+    },
+    {
+      "directive": "COMMAND",
+      "timestamp": "2025-02-27T12:10:01Z",
+      "action": "lock",
+      "ebike_ids": [123]
+    },
+    {
+      "directive": "COMMACK",
+      "ebike_id": 123,
+      "status": "success"
+    },
+    {
+      "directive": "COMMACK",
+      "ebike_id": 123,
+      "status": "success"
+    },
+    {
+      "directive": "SETUP",
+      "timestamp": "2025-02-27T12:15:00Z",
+      "data_interval": 5
+    },
+    {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.1278, 51.5074]
+          },
+          "properties": {
+            "ebike_id": 123,
+            "timestamp": "2025-02-27T12:05:00Z",
+            "status": "unlocked"
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-0.1300, 51.5080]
+          },
+          "properties": {
+            "ebike_id": 456,
+            "timestamp": "2025-02-27T12:06:00Z",
+            "status": "locked"
+          }
+        }
+      ]
+    }
+  ]
+  

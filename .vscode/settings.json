@@ -1,0 +1,41 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-2.517370, 51.451100]
+      },
+      "properties": {
+        "ebike_id": 1,
+        "timestamp": "2025-04-07T12:34:56Z",
+        "status": "unlocked"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-2.543210, 51.460000]
+      },
+      "properties": {
+        "ebike_id": 2,
+        "timestamp": "2025-04-07T12:35:56Z",
+        "status": "locked"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-2.530000, 51.455000]
+      },
+      "properties": {
+        "ebike_id": 3,
+        "timestamp": "2025-04-07T12:36:56Z",
+        "status": "unlocked"
+      }
+    }
+  ]
+}

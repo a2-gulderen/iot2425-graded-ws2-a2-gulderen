@@ -1,44 +1,65 @@
-#pragma once
-
-#ifndef EBIKEHANDLER_H
-#define EBIKEHANDLER_H
-
-
-#include <Poco/Net/HTTPRequestHandlerFactory.h>
-#include <Poco/Net/HTTPRequestHandler.h>
-#include <Poco/JSON/Array.h>
-#include <Poco/Net/HTTPServerRequest.h>
+#include "EbikeHandler.h"
 #include <Poco/Net/HTTPServerResponse.h>
+#include <Poco/Net/HTTPRequestHandler.h>
+#include <fstream>
+#include <sstream>
 
+// EBikeHandler implementation.
+EBikeHandler::EBikeHandler(Poco::JSON::Array::Ptr& ebikes)
+    : _ebikes(ebikes)
+{
+}
 
-// EBikeHandler: Handles requests to the /ebikes endpoint
-class EBikeHandler : public Poco::Net::HTTPRequestHandler {
-public:
-    explicit EBikeHandler(Poco::JSON::Array::Ptr& ebikes);
-    void handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response) override;
+void EBikeHandler::handleRequest(Poco::Net::HTTPServerRequest& request, 
+                                 Poco::Net::HTTPServerResponse& response)
+{
+    // Build a simple FeatureCollection JSON from the shared eBike array.
+    Poco::JSON::Object::Ptr featureCollection = new Poco::JSON::Object();
+    featureCollection->set("type", "FeatureCollection");
+    featureCollection->set("features", _ebikes);
+    
+    std::ostringstream oss;
+    featureCollection->stringify(oss);
 
-private:
-    Poco::JSON::Array::Ptr& _ebikes;
-};
+    response.setContentType("application/json");
+    response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
+    std::ostream& out = response.send();
+    out << oss.str();
+}
 
-// FileHandler: Handles requests for static files (e.g., map.html)
-class FileHandler : public Poco::Net::HTTPRequestHandler {
-public:
-    explicit FileHandler(const std::string& filePath);
-    void handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response) override;
+// FileHandler implementation for static files.
+FileHandler::FileHandler(const std::string& filePath)
+    : _filePath(filePath)
+{
+}
 
-private:
-    std::string _filePath;
-};
+void FileHandler::handleRequest(Poco::Net::HTTPServerRequest& request, 
+                                Poco::Net::HTTPServerResponse& response)
+{
+    std::ifstream file(_filePath.c_str());
+    if (!file) {
+        response.setStatus(Poco::Net::HTTPResponse::HTTP_NOT_FOUND);
+        response.send() << "File not found.";
+        return;
+    }
+    response.setContentType("text/html");
+    response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
+    std::ostream& out = response.send();
+    out << file.rdbuf();
+}
 
-// RequestHandlerFactory: Maps incoming requests to the appropriate handler
-class RequestHandlerFactory : public Poco::Net::HTTPRequestHandlerFactory {
-public:
-    explicit RequestHandlerFactory(Poco::JSON::Array::Ptr& ebikes);
-    Poco::Net::HTTPRequestHandler* createRequestHandler(const Poco::Net::HTTPServerRequest& request) override;
+// RequestHandlerFactory implementation.
+RequestHandlerFactory::RequestHandlerFactory(Poco::JSON::Array::Ptr& ebikes)
+    : _ebikes(ebikes)
+{
+}
 
-private:
-    Poco::JSON::Array::Ptr& _ebikes;
-};
-
-#endif // EBIKEHANDLER_H
+Poco::Net::HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const Poco::Net::HTTPServerRequest& request)
+{
+    // For simplicity, if the URI is "/ebikes", return an EBikeHandler; otherwise serve map.html.
+    if (request.getURI() == "/ebikes") {
+        return new EBikeHandler(_ebikes);
+    } else {
+        return new FileHandler("src/html/map.html");
+    }
+}

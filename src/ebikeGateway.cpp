@@ -1,24 +1,26 @@
 #include "web/WebServer.h"
+#include "SocketServer.h"
+#include <Poco/JSON/Array.h>
 #include <iostream>
+#include <thread>
 
 int main() {
-    // Create a reference to a Poco JSON array to store the ebike objects
+    // Create a shared JSON array for eBike features.
     Poco::JSON::Array::Ptr ebikes = new Poco::JSON::Array();
+    int webPort = 8080; // or 9853, whichever you want
+    WebServer webServer(ebikes);
+    webServer.start(webPort);
 
-    try {
-        //Replace 0 with your allocated port as per specifications.
-        int port = 0;
-        
-        // Create instances of the server class
-        WebServer webServer(ebikes);
 
-        // Start the server 
-        webServer.start(port);
-    
-        return 0;
-    } catch (const Poco::Exception& ex) {
-        std::cerr << "Server error (Poco): " << ex.displayText() << std::endl;
-        return 1;
-    }
+    int udpPort = 8081;   // UDP socket server port
+
+    // Create one instance of SocketServer using udpPort.
+    SocketServer socketServer(ebikes, udpPort);
+    socketServer.start();
+
+    // Create one instance of WebServer.
+    WebServer webServer(ebikes);
+    webServer.start(webPort);
+
     return 0;
 }

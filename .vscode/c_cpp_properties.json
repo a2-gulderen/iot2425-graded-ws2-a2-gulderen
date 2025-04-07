@@ -1,0 +1,26 @@
+{
+    "configurations": [
+      {
+        "name": "Mac",
+        
+        "compilerPath": "/usr/bin/g++",
+        "includePath": [
+          "${workspaceFolder}",
+          "${workspaceFolder}/src",
+          "/opt/iot/poco/include"
+        ],
+        "browse": {
+          "path": [
+            "${workspaceFolder}",
+            "/opt/iot/poco/include"
+          ],
+          "limitSymbolsToIncludedHeaders": true
+        },
+        "cStandard": "c11",
+        "cppStandard": "c++17",
+        "intelliSenseMode": "linux-gcc-x64"
+      }
+    ],
+    "version": 4
+  }
+  
