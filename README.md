@@ -25,7 +25,8 @@ Enable the system to display eBike locations on a web map.
 - Linking issues with the simulated socket class required marking its member functions as inline.
 - The Makefile needed adjustments to correctly set object file paths.
 
-<img src="(<map iot.png>)" alt="structure" width="200"/>
+![image](https://github.com/user-attachments/assets/fc2c6e51-bf29-4c2b-9e81-6653312760ab)
+
 
 ### Activity Two: Maintenance Management of eBikes
 
@@ -56,4 +57,3 @@ This project significantly improved my understanding of network programming, esp
 Overall, while I encountered several challenges during development, each issue provided a learning opportunity, and the final system successfully demonstrates both location tracking and basic maintenance management features.
 
 
-# iot2425-graded-ws2-a2-gulderen
